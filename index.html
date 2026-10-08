@@ -103,7 +103,7 @@
         <label>Time<input id="fTime" required maxlength="40"></label>
       </div>
       <label>Players<input id="fPlayers" placeholder="Names, separated by commas" maxlength="200"></label>
-      <label>Transfer to<input id="fTransfer" maxlength="60"></label>
+      <label>Court booked under<input id="fTransfer" maxlength="60"></label>
       <label>Notes<input id="fNotes" placeholder="Optional" maxlength="200"></label>
       <div class="actions">
         <button type="button" class="leave" id="cancelBtn">Cancel</button>
@@ -179,7 +179,7 @@
     for (const p of real) pl.appendChild(el('span', 'chip' + (me() && p.toLowerCase() === me().toLowerCase() ? ' you' : ''), p));
     for (let i = 0; i < open; i++) pl.appendChild(el('span', 'chip open', 'Open spot'));
     c.appendChild(pl);
-    if (s.transfer) { const m = el('div', 'meta'); const t = el('span'); t.append('Transfer to '); t.appendChild(el('b', null, s.transfer)); m.appendChild(t); c.appendChild(m); }
+    if (s.transfer) { const m = el('div', 'meta'); const t = el('span'); t.append('Booked under '); t.appendChild(el('b', null, s.transfer)); m.appendChild(t); c.appendChild(m); }
     if (s.notes) c.appendChild(el('div', 'note', s.notes));
     const a = el('div', 'actions');
     const iAmIn = me() && real.some(p => p.toLowerCase() === me().toLowerCase());
