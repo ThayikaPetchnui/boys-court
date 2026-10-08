@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Boys' Court</title>
+<meta name="description" content="Pickleball court sign-up: see sessions, join a spot, add a court.">
+<meta property="og:title" content="Boys' Court">
+<meta property="og:description" content="Pickleball court sign-up: see sessions, join a spot, add a court.">
+<meta name="theme-color" content="#1d3b5c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23f2d43d'/%3E%3Ccircle cx='24' cy='24' r='4' fill='%231d3b5c' opacity='.35'/%3E%3Ccircle cx='40' cy='28' r='4' fill='%231d3b5c' opacity='.35'/%3E%3Ccircle cx='30' cy='42' r='4' fill='%231d3b5c' opacity='.35'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --court: #1d3b5c;      /* court blue */
+    --court-2: #24507a;
+    --kitchen: #2f7d5c;    /* kitchen green */
+    --ball: #f2d43d;       /* ball yellow */
+    --line: #ffffff;
+    --ink: #13202e;
+    --muted: #5d6b78;
+    --paper: #f3f5f0;
+    --card: #ffffff;
+    --edge: #dfe5dc;
+    --danger: #c2413b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--paper); color: var(--ink); font: 16px/1.45 Figtree, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+  .top { background: var(--court); color: var(--line); padding: 22px 16px 26px; position: relative; overflow: hidden; }
+  .top::after { /* court lines */
+    content: ""; position: absolute; inset: auto -10% -2px -10%; height: 46px;
+    border-top: 3px solid rgba(255,255,255,.55); background: var(--kitchen);
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+  .top .wrap { position: relative; z-index: 1; padding: 0; }
+  h1 { font: 800 clamp(34px, 9vw, 48px)/1 "Bricolage Grotesque", Figtree, sans-serif; margin: 0 0 6px; letter-spacing: -.5px; }
+  h1 .dot { display: inline-block; width: .42em; height: .42em; border-radius: 50%; background: var(--ball); margin-left: 6px; vertical-align: .12em; box-shadow: inset -3px -3px 0 rgba(0,0,0,.12); }
+  .sub { margin: 0 0 22px; opacity: .85; font-size: 15px; }
+  .ask { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; width: 100%; }
+  .ask input { font: 16px Figtree, system-ui, sans-serif; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--edge); flex: 1 1 140px; min-width: 0; color: var(--ink); background: #fff; }
+  .ask input:focus { outline: none; border-color: var(--kitchen); }
+  main.wrap { padding-block: 18px 110px; display: grid; gap: 12px; }
+  .day h2 { font: 700 13px/1 Figtree, sans-serif; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  .list { display: grid; gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--edge); border-radius: 16px; padding: 14px 14px 12px; display: grid; gap: 10px; }
+  .card .date { font: 700 13px/1 Figtree, sans-serif; letter-spacing: 1.2px; text-transform: uppercase; color: var(--kitchen); margin-bottom: -4px; }
+  .row1 { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .time { font: 800 22px/1.1 "Bricolage Grotesque", Figtree, sans-serif; font-variant-numeric: tabular-nums; }
+  .count { font-size: 13px; font-weight: 600; color: var(--kitchen); white-space: nowrap; }
+  .count.full { color: var(--muted); }
+  .players { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { padding: 5px 11px; border-radius: 999px; background: #e9f1ec; color: #1f4f3b; font-size: 14px; font-weight: 600; }
+  .chip.you { background: var(--ball); color: var(--ink); }
+  .chip.open { background: transparent; border: 1.5px dashed #9fb2a6; color: var(--muted); font-weight: 500; }
+  .meta { font-size: 14px; color: var(--muted); display: grid; gap: 2px; }
+  .meta b { color: var(--ink); font-weight: 600; }
+  .note { background: #fff8d6; border-radius: 10px; padding: 6px 10px; font-size: 14px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button { font: 600 15px/1 Figtree, system-ui, sans-serif; border: 0; border-radius: 12px; padding: 11px 16px; cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--ball); outline-offset: 2px; }
+  .join { background: var(--kitchen); color: #fff; }
+  .leave { background: #e7ece6; color: var(--ink); }
+  .ghost { background: transparent; color: var(--muted); padding-inline: 8px; }
+  .del { background: transparent; color: var(--danger); padding-inline: 8px; }
+  .sure { font-size: 14px; color: var(--danger); font-weight: 600; }
+  .empty { text-align: center; color: var(--muted); padding: 30px 10px; }
+  .fab { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ball); color: var(--ink); font-size: 17px; padding: 15px 24px; border-radius: 999px; box-shadow: 0 6px 18px rgba(19,32,46,.25); }
+  .sheet { position: fixed; inset: 0; background: rgba(19,32,46,.45); display: flex; align-items: flex-end; justify-content: center; z-index: 10; }
+  .sheet[hidden] { display: none; }
+  .panel { background: var(--paper); width: 100%; max-width: 640px; border-radius: 20px 20px 0 0; padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 12px; max-height: 92vh; overflow-y: auto; }
+  .panel h3 { margin: 0; font: 800 24px/1.1 "Bricolage Grotesque", Figtree, sans-serif; }
+  label { display: grid; gap: 4px; font-size: 13px; font-weight: 600; color: var(--muted); }
+  .panel input { font: 16px Figtree, system-ui, sans-serif; padding: 12px; border-radius: 12px; border: 1.5px solid var(--edge); background: #fff; color: var(--ink); width: 100%; min-height: 48px; -webkit-appearance: none; appearance: none; }
+  .panel input:focus { outline: none; border-color: var(--kitchen); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .panel .actions { justify-content: flex-end; }
+  .save { background: var(--court); color: #fff; }
+  .toast { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 12px; font-size: 14px; z-index: 20; max-width: calc(100% - 32px); }
+  .toast[hidden] { display: none; }
+  .busy { opacity: .55; pointer-events: none; }
+  @media (prefers-reduced-motion: no-preference) { .card { transition: opacity .2s; } }
+</style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <h1>Boys' Court<span class="dot" aria-hidden="true"></span></h1>
+      <p class="sub" id="sub">Loading courts…</p>
+    </div>
+  </header>
+
+  <main class="wrap" id="main"><p class="empty">Loading…</p></main>
+
+  <button class="fab" id="addBtn">+ New session</button>
+
+  <div class="sheet" id="sheet" hidden>
+    <form class="panel" id="form">
+      <h3 id="formTitle">New session</h3>
+      <div class="two">
+        <label>Court date<input id="fDate" type="date" required></label>
+        <label>Time<input id="fTime" required maxlength="40"></label>
+      </div>
+      <label>Players<input id="fPlayers" placeholder="Names, separated by commas" maxlength="200"></label>
+      <label>Transfer to<input id="fTransfer" maxlength="60"></label>
+      <label>Notes<input id="fNotes" placeholder="Optional" maxlength="200"></label>
+      <div class="actions">
+        <button type="button" class="leave" id="cancelBtn">Cancel</button>
+        <button type="submit" class="save" id="saveBtn">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+  const SPOTS = 4; // doubles
+  const $ = id => document.getElementById(id);
+  let data = [], editing = null, sureId = null;
+
+  const store = { get(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  const me = () => store.get('bc_name').trim(); // remembered after your first Join
+  let asking = null; // session id whose inline name box is open
+
+  function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, 2600); }
+  const API = 'https://script.google.com/macros/s/AKfycbxWfVt5W55Fqt2keGWAIZUSghtJBT8UiJEsR4vJkCmX2_vKcQjr0HPYKpq6-ow5pD_0_w/exec';
+  function call(fn, ...args) { // save / join / leave / remove, sent to the Google Sheet
+    document.body.classList.add('busy');
+    const body = fn === 'save' ? { action: 'save', data: args[0] } : fn === 'remove' ? { action: 'remove', id: args[0] } : { action: fn, id: args[0], name: args[1] };
+    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
+      .then(r => r.json())
+      .then(r => { document.body.classList.remove('busy'); if (!Array.isArray(r)) throw new Error('bad reply'); return r; })
+      .catch(e => { document.body.classList.remove('busy'); toast('Could not save. Check your connection and try again.'); throw e; });
+  }
+  const names = s => String(s || '').split(',').map(x => x.trim()).filter(Boolean);
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function parseDate(t) { // "2026-10-15" (date picker) or older typed text like "Thu 15 Oct"
+    t = String(t || '').trim(); let m = t.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (m) return new Date(+m[1], m[2] - 1, +m[3]);
+    m = t.match(/(\d{1,2})\s+([A-Za-z]{3})[A-Za-z]*\.?(?:\s+(\d{4}))?/);
+    if (m) { const mi = MON.findIndex(x => x.toLowerCase() === m[2].toLowerCase()); if (mi >= 0) return new Date(m[3] ? +m[3] : new Date().getFullYear(), mi, +m[1]); }
+    return null;
+  }
+  const showDate = t => { const d = parseDate(t); return d ? DAY[d.getDay()] + ' ' + d.getDate() + ' ' + MON[d.getMonth()] : (t || 'Date TBC'); };
+  const isoDate = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  function startMin(t) { // minutes after midnight of the start time, for sorting ("5.00-7.00 PM" -> 17:00)
+    t = String(t || ''); const m = t.match(/(\d{1,2})(?:[.:](\d{2}))?/); if (!m) return 9999;
+    const first = t.split(/[-–]/)[0], mer = /pm/i.test(first) ? 'pm' : /am/i.test(first) ? 'am' : /pm/i.test(t) ? 'pm' : /am/i.test(t) ? 'am' : '';
+    let h = +m[1]; if (mer === 'pm' && h < 12) h += 12; if (mer === 'am' && h === 12) h = 0;
+    return h * 60 + (+m[2] || 0);
+  }
+  function upcoming() { // today and later, soonest first; past sessions stay in the spreadsheet only
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    return data.map(s => ({ s, d: parseDate(s.date) })).filter(x => !x.d || x.d >= today)
+      .sort((a, b) => (a.d ? a.d.getTime() : 9e15) - (b.d ? b.d.getTime() : 9e15) || startMin(a.s.time) - startMin(b.s.time)).map(x => x.s);
+  }
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+  function render() {
+    const main = $('main'); main.textContent = '';
+    const list = upcoming();
+    $('sub').textContent = list.length ? `${list.length} upcoming session${list.length > 1 ? 's' : ''} · tap Join to grab a spot` : 'No upcoming sessions';
+    if (!list.length) { main.appendChild(el('p', 'empty', 'No upcoming court sessions. Tap “+ New session” to add one.')); return; }
+    const box = el('div', 'list');
+    for (const s of list) box.appendChild(card(s));
+    main.appendChild(box);
+  }
+
+  function card(s) {
+    const c = el('article', 'card');
+    const ps = names(s.players), real = ps.filter(p => p !== '?'), open = Math.max(0, SPOTS - real.length);
+    c.appendChild(el('div', 'date', showDate(s.date)));
+    const r1 = el('div', 'row1');
+    r1.appendChild(el('div', 'time', s.time || 'Time TBC'));
+    r1.appendChild(el('div', 'count' + (open ? '' : ' full'), open ? `${open} spot${open > 1 ? 's' : ''} open` : 'Full'));
+    c.appendChild(r1);
+    const pl = el('div', 'players');
+    for (const p of real) pl.appendChild(el('span', 'chip' + (me() && p.toLowerCase() === me().toLowerCase() ? ' you' : ''), p));
+    for (let i = 0; i < open; i++) pl.appendChild(el('span', 'chip open', 'Open spot'));
+    c.appendChild(pl);
+    if (s.transfer) { const m = el('div', 'meta'); const t = el('span'); t.append('Transfer to '); t.appendChild(el('b', null, s.transfer)); m.appendChild(t); c.appendChild(m); }
+    if (s.notes) c.appendChild(el('div', 'note', s.notes));
+    const a = el('div', 'actions');
+    const iAmIn = me() && real.some(p => p.toLowerCase() === me().toLowerCase());
+    if (iAmIn) { const b = el('button', 'leave', 'Leave'); b.onclick = () => call('leave', s.id, real.find(p => p.toLowerCase() === me().toLowerCase())).then(r => { data = r; render(); toast('You left ' + s.time); }); a.appendChild(b); }
+    else if (open && asking === s.id) {
+      const f = el('form', 'ask'); const inp = el('input'); inp.placeholder = 'Your name'; inp.maxLength = 30; inp.setAttribute('aria-label', 'Your name'); inp.autocomplete = 'nickname';
+      const ok = el('button', 'join', 'Add me'); ok.type = 'submit'; const no = el('button', 'ghost', 'Cancel'); no.type = 'button';
+      no.onclick = () => { asking = null; render(); };
+      f.onsubmit = e => { e.preventDefault(); const nm = inp.value.trim(); if (!nm) { inp.focus(); return; } store.set('bc_name', nm); asking = null; call('join', s.id, nm).then(r => { data = r; render(); toast('You’re in for ' + s.time + '!'); }); };
+      f.append(inp, ok, no); a.appendChild(f); setTimeout(() => inp.focus(), 30);
+    }
+    else if (open) { const b = el('button', 'join', 'Join'); b.onclick = () => { if (!me()) { asking = s.id; render(); return; } call('join', s.id, me()).then(r => { data = r; render(); toast('You’re in for ' + s.time + '!'); }); }; a.appendChild(b); }
+    if (asking === s.id) { c.appendChild(a); return c; }
+    const e = el('button', 'ghost', 'Edit'); e.onclick = () => openForm(s); a.appendChild(e);
+    if (sureId === s.id) {
+      a.appendChild(el('span', 'sure', 'Delete this session?'));
+      const y = el('button', 'del', 'Yes, delete'); y.onclick = () => { sureId = null; call('remove', s.id).then(r => { data = r; render(); toast('Session deleted'); }); };
+      const n = el('button', 'ghost', 'Keep'); n.onclick = () => { sureId = null; render(); };
+      a.append(y, n);
+    } else { const d = el('button', 'del', 'Delete'); d.onclick = () => { sureId = s.id; render(); }; a.appendChild(d); }
+    c.appendChild(a);
+    return c;
+  }
+
+  function openForm(s) {
+    editing = s ? s.id : null;
+    $('formTitle').textContent = s ? 'Edit session' : 'New session';
+    const pd = s ? parseDate(s.date) : null; $('fDate').value = pd ? isoDate(pd) : ''; $('fTime').value = s ? s.time : '';
+    $('fPlayers').value = s ? s.players : '';
+    $('fTransfer').value = s ? s.transfer : ''; $('fNotes').value = s ? s.notes : '';
+    $('sheet').hidden = false; setTimeout(() => $('fDate').focus(), 50);
+  }
+  $('addBtn').onclick = () => openForm(null);
+  $('cancelBtn').onclick = () => { $('sheet').hidden = true; };
+  $('sheet').addEventListener('click', e => { if (e.target === $('sheet')) $('sheet').hidden = true; });
+  $('form').addEventListener('submit', e => {
+    e.preventDefault();
+    const b = { id: editing, date: $('fDate').value.trim(), time: $('fTime').value.trim(), players: $('fPlayers').value.trim(), transfer: $('fTransfer').value.trim(), notes: $('fNotes').value.trim() };
+    call('save', b).then(r => { data = r; $('sheet').hidden = true; render(); toast(editing ? 'Session updated' : 'Session added'); });
+  });
+
+  function load() {
+    fetch(API + '?api=list&t=' + Date.now()).then(r => r.json())
+      .then(r => { if (!Array.isArray(r)) throw new Error('bad reply'); data = r; render(); })
+      .catch(() => { if (!data.length) { $('main').textContent = ''; $('main').appendChild(el('p', 'empty', 'Could not load the courts. Check your connection and refresh.')); } });
+  }
+  load();
+  setInterval(() => { if ($('sheet').hidden && !document.body.classList.contains('busy') && document.visibilityState === 'visible') load(); }, 20000); // pick up friends' changes
+</script>
+</body>
+</html>
