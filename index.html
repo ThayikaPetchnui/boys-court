@@ -139,7 +139,7 @@
   let data = [], editing = null, sureId = null;
 
   const store = { get(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
-  const me = () => store.get('bc_name').trim(); // remembered after your first Join
+  const me = () => store.get('bc_name').trim(); // used to highlight and leave your sessions
   let asking = null; // session id whose inline name box is open
 
   function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, 2600); }
@@ -210,7 +210,7 @@
       f.onsubmit = e => { e.preventDefault(); const nm = inp.value.trim(); if (!nm) { inp.focus(); return; } store.set('bc_name', nm); asking = null; call('join', s.id, nm).then(r => { data = r; render(); toast('You’re in for ' + s.time + '!'); }); };
       f.append(inp, ok, no); a.appendChild(f); setTimeout(() => inp.focus(), 30);
     }
-    else if (open) { const b = el('button', 'join', 'Join'); b.onclick = () => { if (!me()) { asking = s.id; render(); return; } call('join', s.id, me()).then(r => { data = r; render(); toast('You’re in for ' + s.time + '!'); }); }; a.appendChild(b); }
+    else if (open) { const b = el('button', 'join', 'Join'); b.onclick = () => { asking = s.id; render(); }; a.appendChild(b); }
     if (asking === s.id) { c.appendChild(a); return c; }
     const e = el('button', 'ghost', 'Edit'); e.onclick = () => openForm(s); a.appendChild(e);
     if (sureId === s.id) {
