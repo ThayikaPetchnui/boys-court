@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,14 +35,14 @@
     border-top: 3px solid rgba(255,255,255,.55); background: var(--kitchen);
   }
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
-  .top .wrap { position: relative; z-index: 1; padding: 0; max-width: 640px; }
+  .top .wrap { position: relative; z-index: 1; padding: 0; max-width: 640px; text-align: center; }
   h1 { font: 800 clamp(34px, 9vw, 48px)/1 "Bricolage Grotesque", Figtree, sans-serif; margin: 0 0 6px; letter-spacing: -.5px; }
   h1 .dot { display: inline-block; width: .42em; height: .42em; border-radius: 50%; background: var(--ball); margin-left: 6px; vertical-align: .12em; box-shadow: inset -3px -3px 0 rgba(0,0,0,.12); }
   .sub { margin: 0 0 22px; opacity: .85; font-size: 15px; }
   .ask { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; width: 100%; }
   .ask input { font: 16px Figtree, system-ui, sans-serif; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--edge); flex: 1 1 140px; min-width: 0; color: var(--ink); background: #fff; }
   .ask input:focus { outline: none; border-color: var(--kitchen); }
-  main.wrap { padding-block: 18px 110px; display: grid; grid-template-columns: minmax(240px, .8fr) minmax(0, 1.2fr); align-items: start; gap: 20px; }
+  main.wrap { max-width: 1360px; padding-block: 18px 110px; display: grid; grid-template-columns: minmax(220px, 1fr) minmax(320px, 640px) minmax(220px, 1fr); align-items: start; gap: 20px; }  .guide { grid-column: 1; }  #sessionList { grid-column: 2; }
   .guide { background: #fff; border: 1px solid var(--edge); border-radius: 16px; padding: 20px; }
   .guide h2 { margin: 0 0 8px; font: 800 23px/1.1 "Bricolage Grotesque", Figtree, sans-serif; }
   .guide-intro { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
@@ -86,7 +87,7 @@
   .toast { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 12px; font-size: 14px; z-index: 20; max-width: calc(100% - 32px); }
   .toast[hidden] { display: none; }
   .busy { opacity: .55; pointer-events: none; }
-  @media (max-width: 720px) { main.wrap { grid-template-columns: 1fr; gap: 14px; } .guide { padding: 17px; } }
+  @media (max-width: 840px) { main.wrap { grid-template-columns: 1fr; gap: 14px; } .guide, #sessionList { grid-column: 1; } .guide { padding: 17px; } }
   @media (prefers-reduced-motion: no-preference) { .card { transition: opacity .2s; } }
 </style>
 </head>
