@@ -58,7 +58,7 @@
   .count.full { color: var(--muted); }
   .players { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip { padding: 5px 11px; border-radius: 999px; background: #e9f1ec; color: #1f4f3b; font-size: 14px; font-weight: 600; }
-  .chip.you { background: var(--ball); color: var(--ink); }
+  
   .chip.open { background: transparent; border: 1.5px dashed #9fb2a6; color: var(--muted); font-weight: 500; }
   .meta { font-size: 14px; color: var(--muted); display: grid; gap: 2px; }
   .meta b { color: var(--ink); font-weight: 600; }
@@ -195,7 +195,7 @@
     r1.appendChild(el('div', 'count' + (open ? '' : ' full'), open ? `${open} spot${open > 1 ? 's' : ''} open` : 'Full'));
     c.appendChild(r1);
     const pl = el('div', 'players');
-    for (const p of real) pl.appendChild(el('span', 'chip' + (me() && p.toLowerCase() === me().toLowerCase() ? ' you' : ''), p));
+    for (const p of real) pl.appendChild(el('span', 'chip', p));
     for (let i = 0; i < open; i++) pl.appendChild(el('span', 'chip open', 'Open spot'));
     c.appendChild(pl);
     if (s.transfer) { const m = el('div', 'meta'); const t = el('span'); t.append('Booked under '); t.appendChild(el('b', null, s.transfer)); m.appendChild(t); c.appendChild(m); }
